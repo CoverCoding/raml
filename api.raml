@@ -10,8 +10,8 @@ types:
   Model:
     type: object
     properties:
-      id: string
-      createdAt: datetime
+      id?: string
+      createdAt?: datetime
       updatedAt?: datetime
   User:
     type: Model
@@ -21,14 +21,19 @@ types:
       classOfGraducation?: number
       email: string
       password?: string
+  Keyword:
+    type: Model
+    properties:
 
   Problem:
     type: Model
     properties:
-      title?: string
+      title: string
+      description?: string
       body?: string
-      author: User
+      author?: User
       due?: datetime
+      keywords?: Keyword?
 
   Course:
     type: Model
@@ -64,14 +69,16 @@ types:
   post:
     description: create a problem
     headers:
-      UserID:
+      AuthorID:
         description: the identifier for the user who posts a new problem
         type: string
         example: "d05ce367-5b54-4436-9537-0386987ba18e"
     body:
       application/json:
         type: Problem
-
+        example:
+          title: "Assignment 1"
+          body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
 /courses:
   get:
     responses:
@@ -98,7 +105,7 @@ types:
                 term: "B"
                 problemCount: 100
                 instructor: "Agu"
-    /{id}:
+  /{id}:
     get:
       responses:
         200:
@@ -147,6 +154,3 @@ types:
               }
       responses:
         200:
-          body:
-            raw: "Successful"
->>>>>>> 071fef983721265ef2523a482b0981bc326cd522
