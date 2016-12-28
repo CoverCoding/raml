@@ -128,17 +128,17 @@ types:
                     id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
                     title: "Assignment 1"
                     description: "lllll"
-    /problems
+    /problems:
       post:
         description: create a problem
-          headers:
-            AuthorID:
-              description: the identifier for the user who posts a new problem
-              type: string
-              example: "d05ce367-5b54-4436-9537-0386987ba18e"
-          body:
-            application/json:
-              type: Problem
-              example:
-                title: "Assignment 1"
-                body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
+        headers:
+          AuthorID:
+            description: the identifier for the user who posts a new problem
+            type: string
+            example: "d05ce367-5b54-4436-9537-0386987ba18e"
+        body:
+          application/json:
+            type: Problem
+            example:
+              title: "Assignment 1"
+              body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
