@@ -39,6 +39,7 @@ types:
       term: string
       instructor: string
       problemCount?: number
+      problems?: Problem[]
 
 /problems:
   get:
@@ -98,40 +99,28 @@ types:
                 term: "B"
                 problemCount: 100
                 instructor: "Agu"
-    /{id}:
+  /{id}:
     get:
       responses:
         200:
           body:
             application/json:
-              example: |
-                [
-                  "course": {
-                    "id": {id}
-                    "title": "Walking for Fitness",
-                    "number": "pe101",
-                    "year": "2017",
-                    "term": "b",
-                    "problemCount": 97
-                  },
-                  "problems": [
-                    {
-                      "id": "123",
-                      "title": "Assignment 7",
-                      "body": "iniwhfboiwnefeow"
-                    },
-                    {
-                      "id": "123",
-                      "title": "Assignment 7",
-                      "body": "iniwhfboiwnefeow"
-                    },
-                    {
-                      "id": "123",
-                      "title": "Assignment 7",
-                      "body": "iniwhfboiwnefeow"
-                    }
-                  ]
-                ]
+              type: Course
+              example:
+                createdAt: 2016-02-28T16:41:41.090Z
+                id: "1"
+                title: "Webware 2"
+                courseNumber: "cs202"
+                year: 2017
+                term: "B"
+                problemCount: 100
+                instructor: "Agu"
+                problems:
+                  -
+                    id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
+                    title: "Assignment 1"
+                    description: "lllll"
+
     post:
       description: Add a course
         header:
@@ -149,4 +138,3 @@ types:
         200:
           body:
             raw: "Successful"
->>>>>>> 071fef983721265ef2523a482b0981bc326cd522
