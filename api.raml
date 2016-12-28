@@ -21,9 +21,23 @@ types:
       classOfGraducation?: number
       email: string
       password?: string
+
+  Link:
+    type: Model
+    properties:
+      title?: string
+      url: string
+      upvotes?: number
+      downvotes?: number
+      voteState?:
+        enum: [up, down, not]
+
   Keyword:
     type: Model
     properties:
+      start: number
+      length: number
+      links?: Link[]
 
   Problem:
     type: Model
@@ -122,6 +136,8 @@ types:
             example:
               title: "Assignment 1"
               body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
+        responses:
+          201:
       /{problem_id}:
         get:
           description: get a specific problem
@@ -144,8 +160,91 @@ types:
                       createdAt: 2016-02-28T16:41:41.090Z
         /keywords:
           get:
+            description: get the list of keywords of a specific problem
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: Keyword[]
+                    example:
+                      -
+                        start: 10
+                        length: 25
+                        id: "1d95d277-1af0-4443-9607-3b8fcba11aaa"
+                        links:
+                          -
+                            title: "facebook"
+                            url: "facebook.com"
+                            upvotes: 12
+                            downvotes: 12
+                            voteState: not
+                          -
+                            title: "google"
+                            url: "google.com"
+                            upvotes: 51
+                            downvotes: 10
+                            voteState: up
+                      -
+                        start: 10
+                        length: 25
+                        id: "1d95d277-1af0-4443-9607-3b8fcba11aaa"
+                        links:
+                          -
+                            title: "facebook"
+                            url: "facebook.com"
+                            upvotes: 12
+                            downvotes: 12
+                            voteState: not
+                          -
+                            title: "google"
+                            url: "google.com"
+                            upvotes: 51
+                            downvotes: 10
+                            voteState: up
           post:
-          /{keyword_id}/links:
+            description: create a new keyword
+            body:
+              application/json:
+                type: Keyword
+                example:
+                  start: 15
+                  length: 20
+            responses:
+              201:
+
+          /{keyword_id}:
+            /links:
+              post:
+                description: Create a link for specific problem
+                body:
+                  application/json:
+                    type: Link
+                    example:
+                      url: "https://en.wikipedia.org/wiki/Good"
             /{link_id}:
-              /upvote:
-              /downvote:
+              /upvotes:
+                post:
+                  headers:
+                    UserID:
+                      type: string
+                      example: "53900363-76fa-4803-9cbf-67ba7e6f43e2"
+                  responses:
+                    201:
+                delete:
+                  responses:
+                    205:
+                      description: "Successfully deleted"
+                    404:
+              /downvotes:
+                post:
+                  headers:
+                    UserID:
+                      type: string
+                      example: "53900363-76fa-4803-9cbf-67ba7e6f43e2"
+                  responses:
+                    201:
+                delete:
+                  responses:
+                    205:
+                      description: "Successfully deleted"
+                    404:
