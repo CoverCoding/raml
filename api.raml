@@ -1,0 +1,51 @@
+#%RAML 1.0
+title: Cover API
+version: v1
+baseUri: http://api.cover.com/{version}
+mediaType: [ application/json ]
+securitySchemes:
+  oauth_2_0: !include securitySchemes/oauth_2_0.raml
+protocols: [HTTP]
+types:
+  TimeStamp:
+    type: object
+    properties:
+      createdAt: datetime
+      updatedAt: datetime
+  User:
+    type: TimeStamp
+    properties:
+      lastname?: string
+      firstname?: string
+      classOfGraducation?: number
+      email: string
+      password?: string
+
+  Problem:
+    type: TimeStamp
+    properties:
+      title?: string
+      body?: string
+      author: User
+      due?: datetime
+/problems:
+  get:
+    description: get list of problems
+    responses:
+      200:
+        body:
+          application/json:
+            type: Problem[]
+            example:
+              -
+                title: "Assignment 1"
+                body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
+                author:
+                  lastname: "Liu"
+                  firstname: "Harry"
+                  classOfGraducation: 2018
+                  email: "byliuyang11@gmail.com"
+                  createdAt: 2016-02-28T16:41:41.090Z
+                  updatedAt: 2016-02-28T16:41:41.090Z
+                createdAt: 2016-02-28T16:41:41.090Z
+                updatedAt: 2016-02-28T16:41:41.090Z
