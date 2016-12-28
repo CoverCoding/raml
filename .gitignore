@@ -1,3 +1,4 @@
 .flooignore
 .floo
+.html
 /node_modules
