@@ -106,6 +106,20 @@ types:
                 term: "B"
                 problemCount: 100
                 instructor: "Agu"
+  post:
+    description: Add a course
+    body:
+      application/json:
+        type: Course
+        example:
+          title: "Physics"
+          courseNumber: "ph1121"
+          year: 2017
+          term: "D"
+          instructor: "12345"
+    responses:
+      200:
+
   /{id}:
     get:
       responses:
@@ -127,19 +141,3 @@ types:
                     id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
                     title: "Assignment 1"
                     description: "lllll"
-
-    post:
-      description: Add a course
-        header:
-          contentType: application/json
-        body:
-          application/json:
-            example: |
-              {
-                "title": "Physics",
-                "number": "ph1121",
-                "year": "2017",
-                "term": "d",
-              }
-      responses:
-        200:
