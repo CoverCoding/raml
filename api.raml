@@ -7,13 +7,15 @@ securitySchemes:
   oauth_2_0: !include securitySchemes/oauth_2_0.raml
 protocols: [HTTP]
 types:
-  TimeStamp:
+  Model:
     type: object
     properties:
+      id: string
       createdAt: datetime
-      updatedAt: datetime
+      updatedAt?: datetime
+
   User:
-    type: TimeStamp
+    type: Model
     properties:
       lastname?: string
       firstname?: string
@@ -22,7 +24,7 @@ types:
       password?: string
 
   Problem:
-    type: TimeStamp
+    type: Model
     properties:
       title?: string
       body?: string
@@ -30,13 +32,14 @@ types:
       due?: datetime
 
   Course:
-    type: TimeStamp
+    type: Model
     properties:
       title: string
       courseNumber: string
       year: number
       term: string
       instructor: string
+      problemCount?: number
 
 /problems:
   get:
@@ -59,3 +62,81 @@ types:
                   updatedAt: 2016-02-28T16:41:41.090Z
                 createdAt: 2016-02-28T16:41:41.090Z
                 updatedAt: 2016-02-28T16:41:41.090Z
+
+/courses:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: Course[]
+            example:
+              -
+                createdAt: 2016-02-28T16:41:41.090Z
+                id: "1"
+                title: "Webware"
+                courseNumber: "cs101"
+                year: 2017
+                term: "A"
+                problemCount: 100
+                instructor: "Harrison"
+              -
+                createdAt: 2016-02-28T16:41:41.090Z
+                id: "1"
+                title: "Webware 2"
+                courseNumber: "cs202"
+                year: 2017
+                term: "B"
+                problemCount: 100
+                instructor: "Agu"
+    /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  "course": {
+                    "id": {id}
+                    "title": "Walking for Fitness",
+                    "number": "pe101",
+                    "year": "2017",
+                    "term": "b",
+                    "problemCount": 97
+                  },
+                  "problems": [
+                    {
+                      "id": "123",
+                      "title": "Assignment 7",
+                      "body": "iniwhfboiwnefeow"
+                    },
+                    {
+                      "id": "123",
+                      "title": "Assignment 7",
+                      "body": "iniwhfboiwnefeow"
+                    },
+                    {
+                      "id": "123",
+                      "title": "Assignment 7",
+                      "body": "iniwhfboiwnefeow"
+                    }
+                  ]
+                ]
+    post:
+      description: Add a course
+        header:
+          contentType: application/json
+        body:
+          application/json:
+            example: |
+              {
+                "title": "Physics",
+                "number": "ph1121",
+                "year": "2017",
+                "term": "d",
+              }
+      responses:
+        200:
+          body:
+            raw: "Successful"
