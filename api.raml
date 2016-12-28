@@ -46,27 +46,6 @@ types:
       problemCount?: number
       problems?: Problem[]
 
-/problems:
-  get:
-    description: get list of problems
-    responses:
-      200:
-        body:
-          application/json:
-            type: Problem[]
-            example:
-              -
-                id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
-                title: "Assignment 1"
-                body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
-                author:
-                  id: "1d95d277-1af0-4443-9607-3b8fcba11ec1"
-                  lastname: "Liu"
-                  firstname: "Harry"
-                  classOfGraducation: 2018
-                  email: "byliuyang11@gmail.com"
-                  createdAt: 2016-02-28T16:41:41.090Z
-                createdAt: 2016-02-28T16:41:41.090Z
 /courses:
   get:
     responses:
@@ -106,8 +85,7 @@ types:
           instructor: "12345"
     responses:
       200:
-
-  /{id}:
+  /{course_id}:
     get:
       responses:
         200:
@@ -129,6 +107,8 @@ types:
                     title: "Assignment 1"
                     description: "lllll"
     /problems:
+      get:
+        description: get a list of problems
       post:
         description: create a problem
         headers:
@@ -142,3 +122,30 @@ types:
             example:
               title: "Assignment 1"
               body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
+      /{problem_id}:
+        get:
+          description: get a specific problem
+          responses:
+            200:
+              body:
+                application/json:
+                  type: Problem
+                  example:
+                      id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
+                      title: "Assignment 1"
+                      body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
+                      author:
+                        id: "1d95d277-1af0-4443-9607-3b8fcba11ec1"
+                        lastname: "Liu"
+                        firstname: "Harry"
+                        classOfGraducation: 2018
+                        email: "byliuyang11@gmail.com"
+                        createdAt: 2016-02-28T16:41:41.090Z
+                      createdAt: 2016-02-28T16:41:41.090Z
+        /keywords:
+          get:
+          post:
+          /{keyword_id}/links:
+            /{link_id}:
+              /upvote:
+              /downvote:
