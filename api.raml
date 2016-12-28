@@ -2,7 +2,7 @@
 title: Cover API
 version: v1
 baseUri: http://api.cover.com/{version}
-mediaType: [ application/json ]
+mediaType: application/json
 securitySchemes:
   oauth_2_0: !include securitySchemes/oauth_2_0.raml
 protocols: [HTTP]
@@ -19,8 +19,10 @@ types:
       lastname?: string
       firstname?: string
       classOfGraducation?: number
-      email: string
+      email?: string
       password?: string
+      role?:
+        enum: [admin, normal]
 
   Link:
     type: Model
@@ -246,5 +248,47 @@ types:
                 delete:
                   responses:
                     205:
-                      description: "Successfully deleted"
+                      description: "Successfully delet"
                     404:
+
+/users:
+  post:
+    body:
+      application/json:
+        type: User
+        example:
+          email: "user@example.com"
+          password: "K21PQW9cMvM04d2G"
+    responses:
+      201:
+        description: Successfully created this user
+
+  /{user_id}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: User
+              example:
+                lastname: "Steward"
+                firstname: "John"
+                classOfGraducation: 2017
+                email: "john@example.com"
+    put:
+      body:
+        application/json:
+          type: User
+          example:
+            password: "K21PQW9cMvM04d2G"
+      responses:
+        200:
+          description: Successfully modified this user
+        404:
+          description: Did not find this user
+    delete:
+      responses:
+        205:
+          description: Successfully modified this user
+        404:
+          description: Did not find this user
