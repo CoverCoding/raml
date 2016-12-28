@@ -28,6 +28,16 @@ types:
       body?: string
       author: User
       due?: datetime
+
+  Course:
+    type: TimeStamp
+    properties:
+      title: string
+      courseNumber: string
+      year: number
+      term: string
+      instructor: string
+
 /problems:
   get:
     description: get list of problems
