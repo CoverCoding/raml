@@ -1,4 +1,5 @@
 .flooignore
 .floo
 api.html
-api.html
+.html
+/node_modules
