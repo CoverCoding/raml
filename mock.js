@@ -7,6 +7,11 @@ var options = {
 var callback = function (ramlRequests){
     var express = require('express')
     var app = express()
+    app.all('*', function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "X-Requested-With");
+      next();
+    });
 
     ramlRequests.forEach(function(reqToMock){
         app[reqToMock.method](reqToMock.uri, function(req,res){
@@ -14,7 +19,7 @@ var callback = function (ramlRequests){
             if (reqToMock.defaultCode) {
                 code = reqToMock.defaultCode;
             }
-            res.send(code ,reqToMock.example());
+            res.status(code).send(reqToMock.example());
         });
     });
 
