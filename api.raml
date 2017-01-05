@@ -43,6 +43,7 @@ types:
       start?: number
       length?: number
       links?: Link[]
+      bestLinkUrl?: string
 
   Problem:
     type: Model
@@ -221,10 +222,12 @@ types:
                     id: "1d95d277-1af0-4443-9607-3b8fcba11aaa"
                     start: 10
                     length: 10
+                    bestLinkUrl: "https://en.wikipedia.org/wiki/RWBY"
                   -
                     id: "1d95d277-1af0-4443-9607-3b8fcba11bbb"
                     start: 30
                     length: 10
+                    bestLinkUrl: "https://www.youtube.com/watch?v=-sGiE10zNQM"
       post:
         description: create a new keyword
         body:
