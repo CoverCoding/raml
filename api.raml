@@ -16,9 +16,9 @@ types:
   User:
     type: Model
     properties:
-      lastname?: string
-      firstname?: string
-      classOfGraducation?: number
+      lastName?: string
+      firstName?: string
+      major?: string
       email?: string
       password?: string
       role?:
@@ -28,17 +28,20 @@ types:
     type: Model
     properties:
       title?: string
-      url: string
+      url?: string
       upvotes?: number
       downvotes?: number
+      contributor?: User
+      type?:
+        enum: [wiki, ariticle, video, location, graph, codesnippt, book]
       voteState?:
         enum: [up, down, not]
 
   Keyword:
     type: Model
     properties:
-      start: number
-      length: number
+      start?: number
+      length?: number
       links?: Link[]
 
   Problem:
@@ -104,7 +107,7 @@ types:
                 example:
                   -
                     createdAt: 2016-02-28T16:41:41.090Z
-                    id: "1"
+                    id: "2447dcc2-e64f-4ac9-8b10-14eadd8c85ad"
                     title: "Webware"
                     courseNumber: "cs101"
                     year: 2017
@@ -113,7 +116,7 @@ types:
                     instructor: "Harrison"
                   -
                     createdAt: 2016-02-28T16:41:41.090Z
-                    id: "1"
+                    id: "9fd329c5-0cc8-4bab-8c93-329134f3502"
                     title: "Webware 2"
                     courseNumber: "cs202"
                     year: 2017
@@ -133,164 +136,172 @@ types:
               instructor: "12345"
         responses:
           200:
-      /{course_id}:
-        get:
-          responses:
-            200:
-              body:
-                application/json:
-                  type: Course
-                  example:
-                    id: "1"
-                    title: "Webware 2"
-                    courseNumber: "cs202"
-                    year: 2017
-                    term: "B"
-                    problemCount: 100
-                    instructor: "Agu"
-        /problems:
-          get:
-            description: get a list of problems
-            responses:
-              200:
-                body:
-                  application/json:
-                    type: Problem[]
-                    example:
-                        -
-                          id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
-                          title: "Assignment 1"
-                          description: "This exercise explores the differences between agent functions[1] and agent programs[2]……"
-                          due: 2016-02-28T16:41:41.090Z
-                        -
-                          id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
-                          title: "Assignment 2"
-                          description: "This exercise explores the differences between agent functions[1] and agent programs[2]……"
-          post:
-            description: create a problem
-            headers:
-              AuthorID:
-                description: the identifier for the user who posts a new problem
-                type: string
-                example: "d05ce367-5b54-4436-9537-0386987ba18e"
+/courses:
+  /{course_id}:
+    get:
+      description: get a specific course
+      responses:
+        200:
+          body:
+            application/json:
+              type: Course
+              example:
+                createdAt: 2016-02-28T16:41:41.090Z
+                id: "9fd329c5-0cc8-4bab-8c93-329134f3502"
+                title: "Webware 2"
+                courseNumber: "cs202"
+                year: 2017
+                term: "B"
+                problemCount: 100
+                instructor: "Agu"
+    /problems:
+      get:
+        description: get a list of problems
+        responses:
+          200:
             body:
               application/json:
-                type: Problem
+                type: Problem[]
                 example:
+                    -
+                      id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
+                      title: "Assignment 1"
+                      description: "This exercise explores the differences between agent functions and agent programs……"
+                      due: 2016-02-28T16:41:41.090Z
+                    -
+                      id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
+                      title: "Assignment 2"
+                      description: "This exercise explores the differences between agent functions and agent programs……"
+      post:
+        description: create a problem
+        headers:
+          AuthorID:
+            description: the identifier for the user who posts a new problem
+            type: string
+            example: "d05ce367-5b54-4436-9537-0386987ba18e"
+        body:
+          application/json:
+            type: Problem
+            example:
+              title: "Assignment 1"
+              body: "This exercise explores the differences between agent functions and agent programs.\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
+        responses:
+          201:
+/problems:
+  /{problem_id}:
+    get:
+      description: get a detail information about specific problem
+      responses:
+        200:
+          body:
+            application/json:
+              type: Problem
+              example:
+                  id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
                   title: "Assignment 1"
-                  body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
-            responses:
-              201:
-          /{problem_id}:
-            get:
-              description: get a specific problem
-              responses:
-                200:
-                  body:
-                    application/json:
-                      type: Problem
-                      example:
-                          id: "01447ee6-648c-4fe3-b1c9-b29517db3e4f"
-                          title: "Assignment 1"
-                          body: "This exercise explores the differences between agent functions[1] and agent programs[2].\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
-                          author:
-                            id: "1d95d277-1af0-4443-9607-3b8fcba11ec1"
-                            lastname: "Liu"
-                            firstname: "Harry"
-                            classOfGraducation: 2018
-                            email: "byliuyang11@gmail.com"
-                            createdAt: 2016-02-28T16:41:41.090Z
-                          createdAt: 2016-02-28T16:41:41.090Z
-            /keywords:
-              get:
-                description: get the list of keywords of a specific problem
-                responses:
-                  200:
-                    body:
-                      application/json:
-                        type: Keyword[]
-                        example:
-                          -
-                            start: 10
-                            length: 25
-                            id: "1d95d277-1af0-4443-9607-3b8fcba11aaa"
-                            links:
-                              -
-                                title: "facebook"
-                                url: "facebook.com"
-                                upvotes: 12
-                                downvotes: 12
-                                voteState: not
-                              -
-                                title: "google"
-                                url: "google.com"
-                                upvotes: 51
-                                downvotes: 10
-                                voteState: up
-                          -
-                            start: 10
-                            length: 25
-                            id: "1d95d277-1af0-4443-9607-3b8fcba11aaa"
-                            links:
-                              -
-                                title: "facebook"
-                                url: "facebook.com"
-                                upvotes: 12
-                                downvotes: 12
-                                voteState: not
-                              -
-                                title: "google"
-                                url: "google.com"
-                                upvotes: 51
-                                downvotes: 10
-                                voteState: up
-              post:
-                description: create a new keyword
-                body:
-                  application/json:
-                    type: Keyword
-                    example:
-                      start: 15
-                      length: 20
-                responses:
-                  201:
+                  body: "This exercise explores the differences between agent functions and agent programs.\na. Can there be more than one agent program that implements a given agent function?\nGive an example, or show why one is not possible.\nb. Are there agent functions that cannot be implemented by any agent program?\nc. Given a fixed machine architecture[3], does each agent program implement exactly one agent function?\nd. Given an architecture with n bits of storage[4], how many different possible agent programs are there?\ne. Suppose we keep the agent program fixed but speed up the machine by a factor of two[5]. Does that change the agent function?"
+                  author:
+                    id: "1d95d277-1af0-4443-9607-3b8fcba11ec1"
+                    lastName: "Liu"
+                    firstName: "Harry"
+                    major: "Computer Science"
+                    email: "byliuyang11@gmail.com"
+                    createdAt: 2016-02-28T16:41:41.090Z
+                  createdAt: 2016-02-28T16:41:41.090Z
+    /keywords:
+      get:
+        description: get the list of keywords of a specific problem
+        responses:
+          200:
+            body:
+              application/json:
+                type: Keyword[]
+                example:
+                  -
+                    id: "1d95d277-1af0-4443-9607-3b8fcba11aaa"
+                    start: 10
+                    length: 10
+                  -
+                    id: "1d95d277-1af0-4443-9607-3b8fcba11bbb"
+                    start: 30
+                    length: 10
+      post:
+        description: create a new keyword
+        body:
+          application/json:
+            type: Keyword
+            example:
+              start: 15
+              length: 20
+        responses:
+          201:
 
-              /{keyword_id}:
-                /links:
-                  post:
-                    description: Create a link for specific problem
-                    body:
-                      application/json:
-                        type: Link
-                        example:
-                          url: "https://en.wikipedia.org/wiki/Good"
-                /{link_id}:
-                  /upvotes:
-                    post:
-                      headers:
-                        UserID:
-                          type: string
-                          example: "53900363-76fa-4803-9cbf-67ba7e6f43e2"
-                      responses:
-                        201:
-                    delete:
-                      responses:
-                        205:
-                          description: "Successfully deleted"
-                        404:
-                  /downvotes:
-                    post:
-                      headers:
-                        UserID:
-                          type: string
-                          example: "53900363-76fa-4803-9cbf-67ba7e6f43e2"
-                      responses:
-                        201:
-                    delete:
-                      responses:
-                        205:
-                          description: "Successfully delet"
-                        404:
+/keywords:
+  /{keyword_id}:
+    /links:
+      get:
+        description: get list of links
+        responses:
+          200:
+            body:
+              application/json:
+                type: Link[]
+                example:
+                  -
+                    id: "1d95d277-1af0-4443-9607-3b8fcba11aaa"
+                    title: "RWBY"
+                    url: "https://www.youtube.com/watch?v=-sGiE10zNQM"
+                    upvotes: 0
+                    downvotes: 12
+                    voteState: not
+                    type: video
+                    contributor:
+                      email: "byliuyang11@gmail.com"
+                  -
+                    id: "1d95d277-1af0-4443-9607-3b8fcba11bbb"
+                    title: "RWBY - wikipedia"
+                    url: "https://en.wikipedia.org/wiki/RWBY"
+                    type: wiki
+                    upvotes: 5
+                    downvotes: 12
+                    voteState: up
+                    contributor:
+                      email: "byliuyang11@gmail.com"
+      post:
+        description: Create a link for specific problem
+        body:
+          application/json:
+            type: Link
+            example:
+              url: "https://en.wikipedia.org/wiki/Good"
+/links:
+  /{link_id}:
+    /upvotes:
+      post:
+        headers:
+          UserID:
+            type: string
+            example: "53900363-76fa-4803-9cbf-67ba7e6f43e2"
+        responses:
+          201:
+      delete:
+        responses:
+          205:
+            description: "Successfully deleted"
+          404:
+    /downvotes:
+      post:
+        headers:
+          UserID:
+            type: string
+            example: "53900363-76fa-4803-9cbf-67ba7e6f43e2"
+        responses:
+          201:
+      delete:
+        responses:
+          205:
+            description: "Successfully delete"
+          404:
 
 /users:
   post:
@@ -312,9 +323,9 @@ types:
             application/json:
               type: User
               example:
-                lastname: "Steward"
-                firstname: "John"
-                classOfGraducation: 2017
+                lastName: "Steward"
+                firstName: "John"
+                major: "Robotics Engineering"
                 email: "john@example.com"
     put:
       body:
